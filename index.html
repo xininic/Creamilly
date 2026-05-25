@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CREAMILLY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --warna-bg: #FAF7F2;          /* Krem hangat, super comfy & clean */
+            --warna-card: #FFFFFF;        /* Putih bersih untuk kontainer */
+            --warna-aksen-soft: #F4EAE1;  /* Krem agak gelap untuk hover/aksen lembut */
+            --warna-aksen-bold: #D4A373;  /* Dusty Gold/Brown untuk kesan elegant & premium */
+            --warna-pink-active: #FFEBE7; /* Pink sangat soft saat produk dipilih */
+            --warna-teks-utama: #4A3E3D;  /* Cokelat gelap (lebih lembut dari hitam pekat) */
+            --warna-teks-muter: #8C7E7C;  /* Cokelat pudar untuk sub-teks */
+            --warna-wa: #25D366;
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--warna-bg);
+            color: var(--warna-teks-utama);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container { 
+            max-width: 480px; 
+            width: 100%; 
+            padding-bottom: 40px;
+        }
+
+        /* --- BAGIAN JUDUL & LOGO --- */
+        .header-toko {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 10px;
+            margin-bottom: 35px;
+            text-align: center;
+        }
+
+        .logo-brand {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--warna-card);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+
+        .judul-toko { 
+            font-size: 26px; 
+            font-weight: 600; 
+            color: var(--warna-teks-utama); 
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        /* --- GRID PRODUK --- */
+        .grid-produk {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .kartu-produk {
+            background: var(--warna-card);
+            border: 1px solid rgba(0,0,0,0.02);
+            border-radius: 24px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(140, 126, 124, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kartu-produk:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(140, 126, 124, 0.1);
+        }
+
+        .kartu-produk.active {
+            border-color: var(--warna-aksen-bold);
+            background-color: var(--warna-pink-active);
+        }
+
+        .foto-produk {
+            width: 100%;
+            height: 150px;
+            background: #fcfbfa;
+            border-radius: 18px;
+            margin-bottom: 12px;
+            object-fit: cover;
+        }
+
+        .nama-produk { 
+            font-size: 14px; 
+            font-weight: 500; 
+            color: var(--warna-teks-utama);
+            margin-bottom: 2px; 
+        }
+        
+        .harga-produk { 
+            font-size: 13px; 
+            color: var(--warna-aksen-bold); 
+            font-weight: 600; 
+            margin-bottom: 8px; 
+        }
+
+        .kontrol-qty {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 5px;
+            background: var(--warna-card);
+            padding: 4px 8px;
+            border-radius: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        }
+
+        .kartu-produk.active .kontrol-qty { display: inline-flex; }
+
+        .btn-qty {
+            background: var(--warna-aksen-soft);
+            color: var(--warna-teks-utama);
+            border: none;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-qty:hover {
+            background: var(--warna-aksen-bold);
+            color: white;
+        }
+
+        /* --- INPUT & CARD SECTION --- */
+        .section {
+            background: var(--warna-card);
+            padding: 24px;
+            border-radius: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(140, 126, 124, 0.05);
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            margin: 10px 0;
+            border: 1px solid #EFEBE7;
+            border-radius: 16px;
+            box-sizing: border-box;
+            outline: none;
+            font-family: 'Poppins', sans-serif;
+            background: #FCFBFA;
+            font-size: 13px;
+            color: var(--warna-teks-utama);
+        }
+
+        input:focus {
+            border-color: var(--warna-aksen-bold);
+            background: var(--warna-card);
+        }
+
+        /* --- NEW: GRID METODE PEMBAYARAN KEKINIAN --- */
+        .grid-metode {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 15px 0 25px 0;
+        }
+
+        .kartu-metode {
+            background: #FCFBFA;
+            border: 1px solid #EFEBE7;
+            border-radius: 20px;
+            padding: 16px 12px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .kartu-metode:hover {
+            border-color: var(--warna-aksen-bold);
+            background: var(--warna-card);
+        }
+
+        .kartu-metode.active {
+            border-color: var(--warna-aksen-bold);
+            background-color: var(--warna-pink-active);
+            box-shadow: 0 8px 20px rgba(214, 163, 115, 0.08);
+        }
+
+        .nama-metode {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--warna-teks-utama);
+            margin-bottom: 4px;
+        }
+        
+        .logo-metode {
+        height: 30px;        /* Mengatur tinggi logo agar seragam */
+        width: auto;         /* Lebar otomatis menyesuaikan proporsi gambar */
+        object-fit: contain; /* Memastikan gambar tidak gepeng */
+        margin-bottom: 8px;  /* Jarak antara logo dan tulisan di bawahnya */
+        display: inline-block;
+        }
+
+        .nominal-metode {
+            font-size: 13px;
+            font-weight: 500;
+            color: #E07A5F; /* Menggunakan warna pink/coral bold untuk harga */
+        }
+
+        .btn-bayar {
+            width: 100%;
+            background: var(--warna-teks-utama);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 18px;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(74, 62, 61, 0.15);
+        }
+
+        .btn-bayar:hover {
+            background: var(--warna-aksen-bold);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(212, 163, 115, 0.25);
+        }
+
+        /* --- MODAL DESIGN --- */
+        #modalBayar {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(74, 62, 61, 0.3);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .konten-modal {
+            background: var(--warna-card);
+            width: 90%;
+            max-width: 400px;
+            padding: 30px 24px;
+            border-radius: 28px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: muncul 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes muncul {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .instruksi-bayar {
+            background: #FCFBFA;
+            padding: 18px;
+            border-radius: 20px;
+            text-align: left;
+            margin: 20px 0;
+            font-size: 13px;
+            border: 1px solid #EFEBE7;
+            line-height: 1.6;
+        }
+
+        .rincian-item {
+            font-size: 13px;
+            color: var(--warna-teks-utama);
+            border-bottom: 1px dashed #EFEBE7;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+        }
+
+        .kotak-rekening {
+            background: var(--warna-bg);
+            padding: 16px;
+            border-radius: 18px;
+            margin-top: 15px;
+            border: none;
+            text-align: center;
+        }
+
+        .img-qris {
+            width: 100%;
+            max-width: 180px;
+            margin-top: 12px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .btn-wa {
+            background: var(--warna-wa);
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 16px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 6px 15px rgba(37, 211, 102, 0.2);
+        }
+        
+        .btn-wa:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-tutup {
+            background: none;
+            border: none;
+            color: var(--warna-teks-muter);
+            margin-top: 18px;
+            cursor: pointer;
+            font-size: 13px;
+            text-decoration: none;
+        }
+        
+        .btn-tutup:hover {
+            color: var(--warna-teks-utama);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <div class="header-toko">
+        <img src="./Logo.jpeg" alt="Logo" class="logo-brand"> 
+        <h2 class="judul-toko">CREAMILLY</h2> 
+    </div>
+
+    <p style="font-weight: 600;">1. Silahkan Pilih Varian:</p>
+    <div class="grid-produk">
+        <div class="kartu-produk" onclick="pilihProduk(this, 'Coklat')">
+            <img src="./Produk/1.jpeg" class="foto-produk">
+            <div class="nama-produk">CHOCO LOCO</div>
+            <div class="harga-produk">Rp 10.000</div>
+            <div class="kontrol-qty">
+                <button class="btn-qty" onclick="ubahQty(event, 'Coklat', -1)">-</button>
+                <span id="qty-Coklat">1</span>
+                <button class="btn-qty" onclick="ubahQty(event, 'Coklat', 1)">+</button>
+            </div>
+        </div>
+        <div class="kartu-produk" onclick="pilihProduk(this, 'Mangga')">
+            <img src="./Produk/2.jpeg" class="foto-produk">
+            <div class="nama-produk">STRAWBY</div>
+            <div class="harga-produk">Rp 12.000</div>
+            <div class="kontrol-qty">
+                <button class="btn-qty" onclick="ubahQty(event, 'Mangga', -1)">-</button>
+                <span id="qty-Mangga">1</span>
+                <button class="btn-qty" onclick="ubahQty(event, 'Mangga', 1)">+</button>
+            </div>
+        </div>
+        <div class="kartu-produk" onclick="pilihProduk(this, 'Matcha')">
+            <img src="./Produk/3.jpeg" class="foto-produk">
+            <div class="nama-produk">MATCHA</div>
+            <div class="harga-produk">Rp 12.000</div>
+            <div class="kontrol-qty">
+                <button class="btn-qty" onclick="ubahQty(event, 'Matcha', -1)">-</button>
+                <span id="qty-Matcha">1</span>
+                <button class="btn-qty" onclick="ubahQty(event, 'Matcha', 1)">+</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <p style="font-weight: 600; margin-top:0;">2. Data Pemesan:</p>
+        <input type="text" id="nama" placeholder="Nama Lengkap">
+        <input type="number" id="wa" placeholder="Nomor WhatsApp">
+    </div>
+
+    <div class="section">
+        <p style="font-weight: 600; margin-top:0;">3. Pembayaran:</p>
+        
+        <div class="grid-metode">
+            <div class="kartu-metode" id="metode-BCA" onclick="pilihMetode('BCA')">
+                <img src="./payment/bca-logo.png" class="logo-metode" alt="Logo BCA">
+                <div class="nama-metode">Transfer BCA</div>
+                <div class="nominal-metode kelas-total-metode">Rp 0</div>
+            </div>
+
+            <div class="kartu-metode" id="metode-QRIS" onclick="pilihMetode('QRIS')">
+                <img src="./payment/qris-logo.png" class="logo-metode" alt="Logo QRIS">
+                <div class="nama-metode">QRIS</div>
+                <div class="nominal-metode kelas-total-metode">Rp 0</div>
+            </div>
+        </div>
+        
+        <button class="btn-bayar" onclick="prosesBayar()">BAYAR SEKARANG</button>
+    </div>
+</div>
+
+<div id="modalBayar">
+    <div class="konten-modal">
+        <h3 style="color:var(--warna-teks-utama); margin:0; font-weight: 600;">Konfirmasi Pesanan</h3>
+        <p style="font-size: 13px; color: #666; margin-bottom:15px;">Silahkan cek rincian & selesaikan pembayaran Kak!</p>
+        
+        <div class="instruksi-bayar" id="rincianBayar"></div>
+
+        <button class="btn-wa" onclick="kirimWA()">Sudah Bayar? Konfirmasi WA</button>
+        <button class="btn-tutup" onclick="tutupModal()">Tutup</button>
+    </div>
+</div>
+
+<script>
+    const DAFTAR_HARGA = {
+        "Coklat": 10000,
+        "Mangga": 12000,
+        "Matcha": 12000
+    };
+
+    const DATA_REKENING = {
+        "BCA": {
+            "nama": "BCA - Irene Inesti Ceria Lase", 
+            "nomor": "813-555-4801",  
+            "instruksi": "Gunakan M-Banking / ATM untuk transfer."
+        },
+        "QRIS": {
+            "nama": "QRIS CREAMILLY",
+            "nomor": "Scan kode QR di bawah ini",          
+            "instruksi": "Screenshot/Scan QRIS untuk membayar!!!.",
+            "isQris": true
+        }
+    };
+
+    let keranjang = {};
+    let dataWAKirim = "";
+    let metodePembayaranAktif = ""; // Menyimpan metode yang dipilih secara global
+    let dataPesananSementara = null;
+
+    function simpanKeSheets(nama, wa, metode, total, rincian) {
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbw1qnpSiaWVG0hz1N4yE0SJznp4Aeirbv_yoi8H3B9Rn3wHbje3KhCLdw2RmdspNLbA7w/exec';
+
+        const dataPesanan = {
+            nama: nama,
+            nomor: wa,
+            metode: metode,
+            total: total,
+            rincian: rincian
+        };
+
+        fetch(scriptURL, {
+            method: 'POST',
+            body: JSON.stringify(dataPesanan),
+        })
+        .then(res => console.log("Data berhasil terarsip di Google Sheets"))
+        .catch(err => console.log("Gagal simpan ke Sheets, tapi tetap bisa lanjut WA"));
+    }
+
+    function pilihProduk(elemen, namaProduk) {
+        if (!keranjang[namaProduk]) {
+            elemen.classList.add('active');
+            keranjang[namaProduk] = 1;
+        }
+        updateTotal();
+    }
+
+    function ubahQty(event, namaProduk, delta) {
+        event.stopPropagation();
+        if (keranjang[namaProduk]) {
+            keranjang[namaProduk] += delta;
+            if (keranjang[namaProduk] < 1) {
+                keranjang[namaProduk] = 0;
+                document.querySelectorAll('.kartu-produk').forEach(card => {
+                    if(card.innerText.includes(namaProduk)) card.classList.remove('active');
+                });
+                delete keranjang[namaProduk];
+            } else {
+                document.getElementById('qty-' + namaProduk).innerText = keranjang[namaProduk];
+            }
+            updateTotal();
+        }
+    }
+
+    // NEW: Fungsi untuk memilih metode pembayaran kotak-kotak
+    function pilihMetode(namaMetode) {
+        // Reset class active dari semua kartu metode
+        document.getElementById('metode-BCA').classList.remove('active');
+        document.getElementById('metode-QRIS').classList.remove('active');
+        
+        // Tambahkan class active ke kartu yang dipilih
+        document.getElementById('metode-' + namaMetode).classList.add('active');
+        metodePembayaranAktif = namaMetode;
+    }
+
+    function updateTotal() {
+        let total = 0;
+        for (let key in keranjang) { 
+            total += keranjang[key] * DAFTAR_HARGA[key]; 
+        }
+        
+        // Mengubah nominal text di dalam masing-masing kotak metode pembayaran secara real-time
+        const stringTotal = "Rp " + total.toLocaleString();
+        document.querySelectorAll('.kelas-total-metode').forEach(elemen => {
+            elemen.innerText = stringTotal;
+        });
+    }
+
+    function prosesBayar() {
+        const nama = document.getElementById('nama').value;
+        const wa = document.getElementById('wa').value;
+        
+        // Menggunakan variabel global metodePembayaranAktif hasil klik kartu metode
+        const metodeTerpilih = metodePembayaranAktif; 
+
+        if (!nama || !wa || Object.keys(keranjang).length === 0) {
+            alert("Lengkapi pesanan dan data diri dulu ya kak!");
+            return;
+        }
+
+        if (!metodeTerpilih) {
+            alert("Silahkan pilih salah satu metode pembayaran dulu ya kak!");
+            return;
+        }
+
+        // Hitung ulang total untuk modal
+        let totalAngka = 0;
+        for (let key in keranjang) { totalAngka += keranjang[key] * DAFTAR_HARGA[key]; }
+        const total = "Rp " + totalAngka.toLocaleString();
+
+        const infoRekening = DATA_REKENING[metodeTerpilih];
+
+        let rincianProdukHTML = `<div class="rincian-item"><b>Item yang dipesan:</b><br>`;
+        let rincianWA = "";
+        for (let key in keranjang) {
+            rincianProdukHTML += `• ${key} x${keranjang[key]} = Rp ${(keranjang[key] * DAFTAR_HARGA[key]).toLocaleString()}<br>`;
+            rincianWA += `- ${key} (${keranjang[key]}x)\n`;
+        }
+        rincianProdukHTML += `</div>`;
+
+        let bagianBayarHTML = "";
+        if(infoRekening.isQris) {
+            bagianBayarHTML = `
+                <div class="kotak-rekening">
+                    <b style="font-size:15px;">${infoRekening.nama}</b><br>
+                    <small>${infoRekening.instruksi}</small><br>
+                    <img src="./QRIS1.jpeg" class="img-qris" alt="QRIS Toko">
+                </div>
+            `;
+        } else {
+            bagianBayarHTML = `
+                <div class="kotak-rekening">
+                    <small>Transfer ke ${metodeTerpilih}:</small><br>
+                    <b style="font-size:16px;">${infoRekening.nomor}</b><br>
+                    <span>a/n ${infoRekening.nama}</span><br>
+                    <small style="color:#888;">${infoRekening.instruksi}</small>
+                </div>
+            `;
+        }
+
+        document.getElementById('rincianBayar').innerHTML = `
+            ${rincianProdukHTML}
+            <b>Atas Nama:</b> ${nama}<br>
+            <b>Total Bayar:</b> <b style="color:#E07A5F;">${total}</b><br>
+            ${bagianBayarHTML}
+        `;
+
+        dataWAKirim = `Halo Admin, saya *${nama}*.\n\nKonfirmasi pesanan:\n${rincianWA}\nTotal: *${total}*\nMetode: *${metodeTerpilih}*\n\nMohon diproses ya!`;
+        dataPesananSementara = { nama, wa, metodeTerpilih, total, rincianWA };
+
+        document.getElementById('modalBayar').style.display = 'flex';
+    }
+
+    function tutupModal() {
+        document.getElementById('modalBayar').style.display = 'none';
+    }
+
+    function kirimWA() {
+        if(dataPesananSementara) {
+            simpanKeSheets(
+                dataPesananSementara.nama, 
+                dataPesananSementara.wa, 
+                dataPesananSementara.metodeTerpilih, 
+                dataPesananSementara.total, 
+                dataPesananSementara.rincianWA
+            );
+        }
+
+        const nomorAdmin = "6285264868942"; 
+        window.open(`https://wa.me/${nomorAdmin}?text=${encodeURIComponent(dataWAKirim)}`);
+
+        setTimeout(function() {
+            location.reload(); 
+        }, 1000);
+    }
+</script>
+
+</body>
+</html>
